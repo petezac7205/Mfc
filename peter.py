@@ -7,26 +7,19 @@ from sklearn.metrics import accuracy_score
 
 spam_data = pd.read_csv("spam.csv", encoding="latin1")
 
-# Check the shape of the DataFrame after reading
 print(f"Shape after reading: {spam_data.shape}")
 
 spam_data = spam_data.rename(columns={"v1": "label", "v2": "message"})
 spam_data["label"] = spam_data["label"].map({"ham": 0, "spam": 1})
 
-# Check the shape after renaming and mapping
 print(f"Shape after renaming and mapping: {spam_data.shape}")
 
-# Before dropping rows, investigate rows with missing values
 print(spam_data[spam_data.isnull().any(axis=1)])
 
-# Instead of dropping, consider imputing missing values if appropriate
-# For example, for text data, you could replace missing values with an empty string:
 spam_data["message"].fillna("", inplace=True)
 
-# Or, if appropriate for your data, drop rows with missing values only in 'message'
 spam_data = spam_data.dropna(subset=["message"])
 
-# Check the shape after handling missing values
 print(f"Shape after handling missing values: {spam_data.shape}")
 
 X_train, X_test, y_train, y_test = train_test_split(spam_data["message"], spam_data["label"], test_size=0.2, random_state=42)
@@ -44,7 +37,7 @@ print(f"Model Accuracy: {accuracy:.2f}")
 y_train_pred = model.predict(X_train_tfidf)
 train_accuracy = accuracy_score(y_train, y_train_pred)
 print(f"Training Accuracy: {train_accuracy:.2f}")
-input_data="Do you have car insurance? Well look no further for we at bharath insurance are providing insurance at really low prices. For further details contact us."
+input_data="Hey, i'm going to the movies today"
 input_tfidf = vectorizer.transform([input_data])
 prediction = model.predict(input_tfidf)[0]
 if(prediction==1):
